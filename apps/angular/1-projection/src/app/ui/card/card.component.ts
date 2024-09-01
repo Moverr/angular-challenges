@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+import { NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { CityStore } from '../../data-access/city.store';
 import {
@@ -13,46 +13,29 @@ import { ListItemComponent } from '../list-item/list-item.component';
 
 @Component({
   selector: 'app-card',
-  template: `
-    <div
-      class="flex w-fit flex-col gap-3 rounded-md border-2 border-black p-4"
-      [class]="customClass">
-      <img
-        *ngIf="type === CardType.CITY"
-        src="assets/img/city.png"
-        width="200px" />
-
-      <img
-        *ngIf="type === CardType.TEACHER"
-        src="assets/img/teacher.png"
-        width="200px" />
-      <img
-        *ngIf="type === CardType.STUDENT"
-        src="assets/img/student.webp"
-        width="200px" />
-
-      <section>
-        <app-list-item
-          *ngFor="let item of list"
-          [name]="item.name ? item.name : item.firstName"
-          [id]="item.id"
-          [type]="type"></app-list-item>
-      </section>
-
-      <button
-        class="rounded-sm border border-blue-500 bg-blue-300 p-2"
-        (click)="addNewItem()">
-        Add
-      </button>
-    </div>
-  `,
+  templateUrl: './card.component.html',
   standalone: true,
-  imports: [NgIf, NgFor, ListItemComponent],
+  imports: [NgFor, ListItemComponent],
 })
 export class CardComponent {
   @Input() list: any[] | null = null;
   @Input() type!: CardType;
   @Input() customClass = '';
+
+  private imageMap: { [key in CardType]?: string } = {
+    [CardType.CITY]: 'assets/img/city.png',
+    [CardType.TEACHER]: 'assets/img/teacher.png',
+    [CardType.STUDENT]: 'assets/img/student.webp',
+  };
+
+  // Getter to retrieve the correct image source based on the type
+  get imageSrc(): string | undefined {
+    return this.imageMap[this.type];
+  }
+
+  trackById(index: number, item: { id: number }): number {
+    return item.id;
+  }
 
   CardType = CardType;
 

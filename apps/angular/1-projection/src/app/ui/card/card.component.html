@@ -1,0 +1,26 @@
+<div
+  class="flex w-fit flex-col gap-3 rounded-md border-2 border-black p-4"
+  [class]="customClass">
+
+  <!-- dynamically set image src  -->
+  <img [src]="imageSrc"  width="200px" />
+
+  <!-- list itmes  -->
+  <section>
+    <app-list-item
+    *ngFor="let item of list"
+    [name]="item.name ? item.name : item.firstName"
+    [id]="item.id"
+    [type]="type"></app-list-item>
+  </section>
+
+
+  <!-- Action Button  -->
+  <button
+  class="rounded-sm border border-blue-500 bg-blue-300 p-2"
+  (click)="addNewItem()">
+  Add
+</button>
+
+
+</div>
